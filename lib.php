@@ -1,33 +1,25 @@
 <?php
+
 defined('MOODLE_INTERNAL') || die();
 
-function local_tilecolor_before_http_headers() {
+function local_tilecolor_before_standard_html_head() {
+    global $PAGE;
 
-    if (defined('AJAX_SCRIPT') && AJAX_SCRIPT) {
-        return;
-    }
-    
-    global $USER;
-
-    if (!isloggedin() || isguestuser()) {
+    if (during_initial_install()) {
         return;
     }
 
-    $color = \local_tilecolor\manager::get_user_tile_color($USER->id);
+    $color = \local_tilecolor\service::get_user_tile_color();
+
     if (!$color) {
         return;
     }
 
-    $customcss = "
-    .tiles .tile {
-        border-top-color: {$color} !important;
-    }
-    .format-tiles .course-content ul.tiles .tile.phototile.tilestyle-1 .photo-tile-text h3, .format-tiles .course-content ul.tiles .tile.phototile.tilestyle-2 .photo-tile-text h3{
-		background-color: {$color} !important;
-	}
-    ";
+    // CSS base
+    $PAGE->requires->css('/local/tilecolor/styles_tilecolor.css');
 
-    // Inyecta CSS dinÃ¡mico
-    echo "<style>{$customcss}</style>";
+    // JS mínimo (se ejecuta MUY temprano)
+    $PAGE->requires->js_amd_inline("
+        document.documentElement.style.setProperty('--tilecolor-main', '{$color}');
+    ");
 }
-

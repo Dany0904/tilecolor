@@ -1,0 +1,15 @@
+.format-tiles .tile {
+    border-top-color: var(--tilecolor-main, #ccc) !important;
+}
+
+.format-tiles .course-content ul.tiles .tile.phototile.tilestyle-2 .photo-tile-text h3 {
+    background-color: var(--tilecolor-main, #ccc) !important;
+}
+
+.format-tiles .phototile .progress-indic {
+    background-color: var(--tilecolor-main, #ccc) !important;
+}
+
+.format-tiles .course-content ul.tiles .tile.phototile.tilestyle-1 .photo-tile-text h3 {
+    background-color: var(--tilecolor-main, #ccc) !important;
+}
