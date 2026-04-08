@@ -26,24 +26,20 @@ class manager {
     public static function get_user_tile_color(int $userid): ?string {
 
         $field = get_config('local_tilecolor', 'profilefield');
-        $mappingjson = get_config('local_tilecolor', 'colormapping');
 
-        if (!$field || !$mappingjson) {
-            return null;
-        }
-
-        $mapping = json_decode($mappingjson, true);
-
-        if (!is_array($mapping)) {
+        if (!$field) {
             return null;
         }
 
         $value = self::get_user_profile_value($userid, $field);
 
-        if (!$value || !isset($mapping[$value])) {
+        if (!$value) {
             return null;
         }
 
-        return $mapping[$value];
+        // Obtener color desde config dinámica
+        $color = get_config('local_tilecolor', 'color_' . md5($value));
+
+        return $color ?: null;
     }
 }
